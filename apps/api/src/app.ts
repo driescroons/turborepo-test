@@ -35,6 +35,11 @@ export class App {
 
   public async initConnection() {
     this.orm = await MikroORM.init<PostgreSqlDriver>(ormConfig);
+    const migrator = this.orm.getMigrator();
+    const pendingMigrations = await migrator.getPendingMigrations();
+    if (pendingMigrations.length > 0) {
+      migrator.up();
+    }
   }
 
   private initStaticFiles() {
