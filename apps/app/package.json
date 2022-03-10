@@ -2,7 +2,7 @@
   "name": "app",
   "version": "0.0.0",
   "scripts": {
-    "dev": "http-server -p 8080"
+    "dev": "http-server ./dist -p 8080"
   },
   "devDependencies": {
     "http-server": "^14.1.0"
