@@ -1,7 +1,8 @@
-import express from "express";
+import { App } from "./app";
+import { CommentController } from "./controllers/comment.controller";
 
-const app = express();
-
-app.listen(3000, () => {
-  console.log("Listening on port 3000, http://localhost:3000");
-});
+(async () => {
+  const app = new App([CommentController]);
+  await app.initConnection();
+  app.listen();
+})();
