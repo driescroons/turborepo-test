@@ -18,7 +18,7 @@ export class CommentController {
     return await em.find(Comment, {});
   }
 
-  @Post("/comments")
+  @Post("/")
   public async createComment(@Body() body: CommentValidator) {
     const em = RequestContext.getEntityManager();
     const comment = em.create(
@@ -36,7 +36,7 @@ export class CommentController {
 
   // could be a "patch", because we're updating the upvotes count
   // but I see it more as a "creating an upvote"
-  @Post("/comments/:commentId/upvotes")
+  @Post("/:commentId/upvotes")
   @OnUndefined(204)
   public async upvoteComment(@Param("commentId") commentId: string) {
     const em = RequestContext.getEntityManager();

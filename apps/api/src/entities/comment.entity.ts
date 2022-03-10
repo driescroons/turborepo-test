@@ -9,6 +9,6 @@ export class Comment extends Base {
   @Property()
   public author!: string;
 
-  @Property()
-  public upvotes!: number;
+  @Property({ default: 0 })
+  public upvotes: number = 0;
 }
