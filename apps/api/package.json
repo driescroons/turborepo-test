@@ -2,7 +2,7 @@
   "name": "api",
   "version": "0.0.0",
   "scripts": {
-    "dev": "nodemon",
+    "dev": "docker-compose up -d && nodemon",
     "start": "tsc && node dist/index.js"
   },
   "dependencies": {
