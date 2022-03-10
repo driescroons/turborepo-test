@@ -1,10 +1,45 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <head>
-    <title>Page Title</title>
-  </head>
-  <body>
-    <h1>My First Heading</h1>
-    <p>My first paragraph.</p>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Turborepo comment section</title>
+</head>
+<body>
+  <div class="container px-4 sm:px-0 py-8 sm:mx-auto">
+    <h1 class="text-3xl font-bold">
+      Discussion
+    </h1>
+    <div class="flex border-b-2 border-gray-200 py-12 gap-4 items-center">
+      <img src="https://ui-avatars.com/api/?name=John+Doe" alt="profile picture" class="rounded-full w-10 h-10" />
+      <form class="flex gap-4 grow">
+        <input type="text" placeholder="What are your thoughts?" class="px-4 py-2 w-full border border-gray-200 outline-none rounded"/>
+        <button type="submit" style="background-color: #7e34f6;" class="px-4 rounded text-white text-sm font-semibold">Comment</button>
+      </form>
+    </div>
+    <div class="flex flex-col gap-6 pt-12">
+      <div class="flex flex-row gap-2">
+        <img src="https://ui-avatars.com/api/?name=John+Doe" alt="profile picture" class="rounded-full w-10 h-10" />
+        <div class="ml-2">
+          <div class="flex gap-2 items-center">
+            <span class="font-bold">John Doe</span>
+            <span class="w-0.5 h-0.5 bg-gray-500 rounded-full inline-block"></span>
+            <span class="text-gray-500 text-sm">45 min ago</span>
+          </div>
+          <p class="mt-1">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+          <div class="flex mt-6 gap-8 text-gray-600 text-sm">
+            <button class="font-semibold flex items-center">
+              <div class="w-4 overflow-hidden inline-block">
+                <div class="h-2 w-2 bg-black rotate-45 transform origin-bottom-left"></div>
+               </div>
+              <span>Upvote</span>
+            </button>
+            <button class="font-semibold">Reply</button>
+          </div>
+        </div>
+      </div>
+    </div>    
+  </div>
+</body>
 </html>
