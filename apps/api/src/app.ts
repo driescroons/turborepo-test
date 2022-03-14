@@ -43,15 +43,12 @@ export class App {
   }
 
   private initStaticFiles() {
-    // only used when serving the app in prod
-    if (process.env.NODE_ENV === "production") {
-      fs.copySync(
-        path.resolve(__dirname, "../../app/dist"),
-        path.resolve(__dirname, "../static"),
-        { overwrite: true }
-      );
-      this.server.use(express.static(path.resolve(__dirname, "../static")));
-    }
+    fs.copySync(
+      path.resolve(__dirname, "../../app/dist"),
+      path.resolve(__dirname, "../static"),
+      { overwrite: true }
+    );
+    this.server.use(express.static(path.resolve(__dirname, "../static")));
   }
 
   private initMiddlewares() {
