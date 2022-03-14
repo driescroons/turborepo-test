@@ -11,7 +11,6 @@ const intervals = [
 ];
 
 function timeSince(date) {
-  console.log(date);
   const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
   const interval = intervals.find((i) => i.seconds < seconds);
   const count = Math.floor(seconds / interval.seconds);
@@ -21,7 +20,7 @@ function timeSince(date) {
 (async () => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  const apiComments = await (await fetch("/comments")).json();
+  const { items: apiComments } = await (await fetch("/comments")).json();
   apiComments.forEach((comment) => comments.push(comment));
   renderComments();
 })();
