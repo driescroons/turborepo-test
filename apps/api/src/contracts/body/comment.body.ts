@@ -6,4 +6,8 @@ export class CommentBody {
   @Expose()
   @IsString()
   public text: string;
+
+  @Expose()
+  @IsString()
+  public seed: string;
 }

@@ -12,6 +12,10 @@ export class CommentView {
   public author: string;
 
   @Expose()
+  @IsString()
+  public seed: string;
+
+  @Expose()
   @IsDateString()
   public createdAt: string;
 

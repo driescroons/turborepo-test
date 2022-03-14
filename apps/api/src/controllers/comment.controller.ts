@@ -1,4 +1,5 @@
 import { RequestContext } from "@mikro-orm/core";
+import { randUser, seed } from "@ngneat/falso";
 import {
   Body,
   Controller,
@@ -33,11 +34,14 @@ export class CommentController {
   @UseInterceptor(representer(CommentView))
   public async createComment(@Body() body: CommentBody) {
     const em = RequestContext.getEntityManager();
+    seed(body.seed);
+    const { firstName, lastName } = randUser();
+
     const comment = em.create(
       Comment,
       {
         ...body,
-        author: "John Doe",
+        author: `${firstName} ${lastName}`,
       },
       { persist: true }
     );
