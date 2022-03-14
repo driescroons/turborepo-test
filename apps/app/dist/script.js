@@ -1,4 +1,5 @@
 const comments = [];
+const upvotes = [];
 
 const intervals = [
   { label: "year", seconds: 31536000 },
@@ -53,13 +54,19 @@ const addComment = (comment) => {
         </div>
         <p class="mt-1">${comment.text}</p>
         <div class="flex mt-6 gap-8 text-gray-600 text-sm">
-          <button class="font-semibold flex items-center">
+          <button class="font-semibold flex items-center ${
+            upvotes.includes(comment.uuid) ? "text-green-500" : ""
+          }" ${
+      upvotes.includes(comment.uuid) ? "disabled" : ""
+    } onclick="upvoteComment('${comment.uuid}')">
             <div class="w-4 overflow-hidden inline-block">
-              <div class="h-2 w-2 bg-black rotate-45 transform origin-bottom-left"></div>
+              <div class="h-2 w-2 ${
+                upvotes.includes(comment.uuid) ? "bg-green-500" : "bg-black"
+              } rotate-45 transform origin-bottom-left"></div>
             </div>
-            <span>Upvote</span>
+            <span>${comment.upvotes > 0 ? comment.upvotes : "Upvote"}</span>
           </button>
-          <button class="font-semibold">Reply</button>
+          <button class="font-semibold" onclick="alert('Not implemented')">Reply</button>
         </div>
       </div>
     </div>`
@@ -83,4 +90,22 @@ const postComment = async (e) => {
   renderComments();
 };
 
+const upvoteComment = async (commentId) => {
+  if (upvotes.includes(commentId)) {
+    return;
+  }
+
+  await fetch(`/comments/${commentId}/upvotes`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  comments.find((comment) => comment.uuid === commentId).upvotes++;
+  upvotes.push(commentId);
+  renderComments();
+};
+
 window.postComment = postComment;
+window.upvoteComment = upvoteComment;
