@@ -7,22 +7,31 @@ import {
   Param,
   Post,
   UseBefore,
+  UseInterceptor,
 } from "routing-controllers";
-import { CommentValidator } from "../contracts/validators/comment.validator";
+import { CommentBody } from "../contracts/body/comment.body";
+import { CommentView } from "../contracts/views/comment.view";
 import { Comment } from "../entities/comment.entity";
 import validationMiddleware from "../middlewares/validation.middleware";
+import { listRepresenter, representer } from "../utils/representer";
 
 @Controller("/comments")
 export class CommentController {
   @Get("/")
+  @UseInterceptor(listRepresenter(CommentView))
   public async getComments() {
     const em = RequestContext.getEntityManager();
-    return await em.find(Comment, {});
+    return await em.findAndCount(
+      Comment,
+      {},
+      { orderBy: { createdAt: "DESC" } }
+    );
   }
 
   @Post("/")
-  @UseBefore(validationMiddleware(CommentValidator, "body"))
-  public async createComment(@Body() body: CommentValidator) {
+  @UseBefore(validationMiddleware(CommentBody, "body"))
+  @UseInterceptor(representer(CommentView))
+  public async createComment(@Body() body: CommentBody) {
     const em = RequestContext.getEntityManager();
     const comment = em.create(
       Comment,
