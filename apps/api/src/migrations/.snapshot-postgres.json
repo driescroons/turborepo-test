@@ -53,6 +53,15 @@
           "nullable": false,
           "mappedType": "string"
         },
+        "seed": {
+          "name": "seed",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
         "upvotes": {
           "name": "upvotes",
           "type": "int",

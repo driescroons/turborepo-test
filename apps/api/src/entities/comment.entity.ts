@@ -9,6 +9,10 @@ export class Comment extends Base {
   @Property()
   public author!: string;
 
+  // used to select a random image and author name
+  @Property()
+  public seed: string;
+
   @Property({ default: 0 })
   public upvotes: number = 0;
 }
