@@ -6,9 +6,11 @@ import {
   OnUndefined,
   Param,
   Post,
+  UseBefore,
 } from "routing-controllers";
 import { CommentValidator } from "../contracts/validators/comment.validator";
 import { Comment } from "../entities/comment.entity";
+import validationMiddleware from "../middlewares/validation.middleware";
 
 @Controller("/comments")
 export class CommentController {
@@ -19,6 +21,7 @@ export class CommentController {
   }
 
   @Post("/")
+  @UseBefore(validationMiddleware(CommentValidator, "body"))
   public async createComment(@Body() body: CommentValidator) {
     const em = RequestContext.getEntityManager();
     const comment = em.create(
