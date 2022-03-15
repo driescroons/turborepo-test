@@ -62,6 +62,15 @@
           "nullable": false,
           "mappedType": "string"
         },
+        "parent_uuid": {
+          "name": "parent_uuid",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
         "upvotes": {
           "name": "upvotes",
           "type": "int",
@@ -87,7 +96,21 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {}
+      "foreignKeys": {
+        "comment_parent_uuid_foreign": {
+          "constraintName": "comment_parent_uuid_foreign",
+          "columnNames": [
+            "parent_uuid"
+          ],
+          "localTableName": "public.comment",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.comment",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
     }
   ]
 }
