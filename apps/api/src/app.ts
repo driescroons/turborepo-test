@@ -64,6 +64,7 @@ export class App {
 
   private initControllers = (controllers: Function[]) => {
     useExpressServer(this.server, {
+      cors: true,
       controllers: controllers,
       defaultErrorHandler: false,
     });

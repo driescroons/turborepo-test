@@ -1,4 +1,10 @@
-import { Entity, ManyToOne, OneToMany, Property } from "@mikro-orm/core";
+import {
+  Collection,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  Property,
+} from "@mikro-orm/core";
 import { Base } from "./base.entity";
 
 @Entity()
@@ -14,7 +20,7 @@ export class Comment extends Base {
   public seed: string;
 
   @OneToMany(() => Comment, (comment) => comment.parent)
-  public children: Comment[] = [];
+  public children = new Collection<Comment>(this);
 
   @ManyToOne(() => Comment, { nullable: true })
   public parent?: Comment;

@@ -1,4 +1,4 @@
-import { RequestContext } from "@mikro-orm/core";
+import { RequestContext, wrap } from "@mikro-orm/core";
 import { randUser, seed } from "@ngneat/falso";
 import {
   Body,
@@ -50,7 +50,8 @@ export class CommentController {
     );
 
     await em.flush();
-    return comment;
+    // wrapping for the toJSON method
+    return wrap(comment);
   }
 
   // could be a "patch", because we're updating the upvotes count

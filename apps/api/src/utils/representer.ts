@@ -9,8 +9,8 @@ import {
 
 export const representer =
   <T>(representationType: ClassConstructor<T>) =>
-  (_: Action, content: object) => {
-    return plainToInstance(representationType, content, {
+  (_: Action, content: any) => {
+    return plainToInstance(representationType, content.toJSON?.() ?? content, {
       exposeUnsetFields: false,
     });
   };
