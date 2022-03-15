@@ -23,7 +23,8 @@ function timeSince(date) {
 }
 
 export function Comment({
-  comment: { seed, author, createdAt, text, uuid, upvotes, comments, parent },
+  comment: { seed, author, createdAt, text, uuid, upvotes, children, parent },
+  postComment,
   upvoted = [],
   upvote,
 }) {
@@ -51,7 +52,7 @@ export function Comment({
 
   return (
     <div className="flex flex-row">
-      {!parent && (
+      {!parent && !!children?.length && (
         <div className="flex items-stretch relative">
           <span className="bg-gray-200 h-full block flex-grow w-1 absolute ml-4"></span>
         </div>
@@ -69,7 +70,7 @@ export function Comment({
           <p className="mt-1">{text}</p>
           <div className="flex mt-4 gap-8 text-gray-600 text-sm">
             <button
-              className={`font-semibold flex items-center ${
+              className={`font-semibold flex items-center outline-none ${
                 upvoted.includes(uuid) ? "text-green-500" : ""
               }`}
               disabled={upvoted.includes(uuid) ? true : false}
@@ -96,15 +97,23 @@ export function Comment({
           {isReplying && (
             <div className="mt-4 flex">
               <Form
-                parent={uuid}
                 placeholder={`What are your thoughts about this comment?`}
+                postComment={(values, actions) => {
+                  (async () => {
+                    const success = await postComment(uuid)(values, actions);
+                    if (success) {
+                      setReplying(false);
+                    }
+                  })();
+                }}
               />
             </div>
           )}
           {!parent && (
             <div className="flex flex-col gap-6 pt-6">
-              {comments?.map((comment) => (
+              {children?.map((comment) => (
                 <Comment
+                  key={comment.uuid}
                   comment={{ ...comment, parent: uuid }}
                   upvoted={upvoted}
                   upvote={upvote}

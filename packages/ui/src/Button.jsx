@@ -1,6 +1,6 @@
 import React from "react";
 
-export function Button({ color, label, type, onClick }) {
+export function Button({ color, children, type, loading }) {
   return (
     <button
       className="px-4 rounded text-white text-sm font-semibold"
@@ -8,8 +8,9 @@ export function Button({ color, label, type, onClick }) {
       style={{
         backgroundColor: color,
       }}
+      disabled={loading}
     >
-      {label}
+      {children}
     </button>
   );
 }
