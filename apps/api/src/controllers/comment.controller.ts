@@ -2,8 +2,8 @@ import { RequestContext } from "@mikro-orm/core";
 import { randUser, seed } from "@ngneat/falso";
 import {
   Body,
-  Controller,
   Get,
+  JsonController,
   OnUndefined,
   Param,
   Post,
@@ -16,7 +16,7 @@ import { Comment } from "../entities/comment.entity";
 import validationMiddleware from "../middlewares/validation.middleware";
 import { listRepresenter, representer } from "../utils/representer";
 
-@Controller("/comments")
+@JsonController("/comments")
 export class CommentController {
   @Get("/")
   @UseInterceptor(listRepresenter(CommentView))
