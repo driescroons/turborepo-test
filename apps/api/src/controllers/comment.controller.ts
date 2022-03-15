@@ -24,8 +24,11 @@ export class CommentController {
     const em = RequestContext.getEntityManager();
     return await em.findAndCount(
       Comment,
-      {},
-      { orderBy: { createdAt: "DESC" } }
+      { parent: null },
+      {
+        orderBy: { createdAt: "DESC", children: { createdAt: "DESC" } },
+        populate: ["children"],
+      }
     );
   }
 
