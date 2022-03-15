@@ -1,5 +1,12 @@
-import { Exclude, Expose } from "class-transformer";
-import { IsDateString, IsNumber, IsString, IsUUID } from "class-validator";
+import { Exclude, Expose, Type } from "class-transformer";
+import {
+  IsArray,
+  IsDateString,
+  IsNumber,
+  IsString,
+  IsUUID,
+  ValidateNested,
+} from "class-validator";
 
 @Exclude()
 export class CommentView {
@@ -18,6 +25,15 @@ export class CommentView {
   @Expose()
   @IsDateString()
   public createdAt: string;
+
+  @Expose()
+  @ValidateNested({
+    each: true,
+    context: CommentView,
+  })
+  @Type(() => CommentView)
+  @IsArray()
+  public children: CommentView[];
 
   @Expose()
   @IsNumber()
