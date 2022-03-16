@@ -2,7 +2,7 @@ import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { MikroORM, RequestContext } from "@mikro-orm/core";
 
 import compression from "compression";
-import express, { Application } from "express";
+import express, { Application, Request } from "express";
 import "express-async-errors";
 import helmet from "helmet";
 import hpp from "hpp";
@@ -11,18 +11,22 @@ import errorMiddleware from "./middlewares/error.middleware";
 import ormConfig from "./orm.config";
 import fs from "fs-extra";
 import path from "path";
+import http from "http";
+import { Server } from "socket.io";
 
 // TODO: come from env variables
 const port = 3000;
 
 export class App {
   private orm: MikroORM;
-  private server: Application;
+  private app: Application;
+  private server: http.Server;
 
   constructor(controllers: Function[]) {
-    this.server = express();
+    this.app = express();
     this.initStaticFiles();
     this.initMiddlewares();
+    this.initSockets();
     this.initControllers(controllers);
     this.initErrorMiddleware();
   }
@@ -52,18 +56,18 @@ export class App {
   }
 
   private initMiddlewares() {
-    this.server.use(hpp());
-    this.server.use(helmet());
-    this.server.use(compression());
-    this.server.use(express.json());
-    this.server.use(express.urlencoded({ extended: true }));
-    this.server.use((_, __, next) => {
+    this.app.use(hpp());
+    this.app.use(helmet());
+    this.app.use(compression());
+    this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: true }));
+    this.app.use((_, __, next) => {
       RequestContext.create(this.orm.em, next);
     });
   }
 
   private initControllers = (controllers: Function[]) => {
-    useExpressServer(this.server, {
+    useExpressServer(this.app, {
       cors: true,
       controllers: controllers,
       defaultErrorHandler: false,
@@ -71,6 +75,17 @@ export class App {
   };
 
   private initErrorMiddleware = () => {
-    this.server.use(errorMiddleware);
+    this.app.use(errorMiddleware);
+  };
+
+  private initSockets = () => {
+    this.server = http.createServer(this.app);
+    const io = new Server(this.server, { cors: true } as any);
+
+    this.app.use((req, _, next) => {
+      // TODO: add to types
+      (req as Request & { io: Server }).io = io;
+      next();
+    });
   };
 }
