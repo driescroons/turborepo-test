@@ -30,11 +30,6 @@ export function Comment({
 }) {
   const [isReplying, setReplying] = useState(false);
 
-  const reply = useCallback((e) => {
-    // post the comment
-    console.log(e);
-  }, []);
-
   const escapeKeyListener = useCallback((e) => {
     if (e.code === "Escape") {
       setReplying(false);
@@ -74,7 +69,7 @@ export function Comment({
                 upvoted.includes(uuid) ? "text-green-500" : ""
               }`}
               disabled={upvoted.includes(uuid) ? true : false}
-              onClick={upvote}
+              onClick={() => upvote(uuid)}
             >
               <div className="w-4 overflow-hidden inline-block">
                 <div
