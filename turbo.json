@@ -1,12 +1,18 @@
 {
   "pipeline": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**"]
+    "build": {},
+    "api#build": {
+      "dependsOn": ["app#build", "scripts#copyAssets"],
+      "outputs": ["dist/**"]
     },
-    "lint": {
-      "outputs": []
+    "scripts#copyAssets": {
+      "dependsOn": ["app#build"]
     },
+    "app#build": {
+      "outputs": ["dist/**"]
+    },
+    "lint": {},
+    "test": {},
     "dev": {
       "cache": false
     }
