@@ -1,0 +1,11 @@
+{
+  "name": "scripts",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "copyAssets": "node src/copyAssets.js"
+  },
+  "dependencies": {
+    "fs-extra": "^10.0.1"
+  }
+}
