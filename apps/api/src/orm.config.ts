@@ -7,11 +7,22 @@ const config: Options<PostgreSqlDriver> = {
   migrations: {
     path: "./dist/migrations",
     pathTs: "./src/migrations",
+    disableForeignKeys: false, // heroku config
   },
-  dbName: "postgres",
-  user: "postgres",
-  password: "postgres",
   type: "postgresql",
+  ...(process.env.DATABASE_URL
+    ? {
+        // heroku config
+        clientUrl: process.env.DATABASE_URL,
+        driverOptions: {
+          connection: { ssl: { rejectUnauthorized: false } },
+        },
+      }
+    : {
+        dbName: "postgres",
+        user: "postgres",
+        password: "postgres",
+      }),
 };
 
 export default config;

@@ -9,13 +9,11 @@ import hpp from "hpp";
 import { useExpressServer } from "routing-controllers";
 import errorMiddleware from "./middlewares/error.middleware";
 import ormConfig from "./orm.config";
-import fs from "fs-extra";
 import path from "path";
 import http from "http";
 import { Server } from "socket.io";
 
-// TODO: come from env variables
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 export class App {
   private orm: MikroORM;
@@ -33,7 +31,9 @@ export class App {
 
   public listen() {
     this.server.listen(port, () => {
-      console.log(`Listening on port ${port}, http://localhost:${port}`);
+      if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+        console.log(`Listening on port ${port}, http://localhost:${port}`);
+      }
     });
   }
 
@@ -46,13 +46,18 @@ export class App {
     }
   }
 
+  public getServer(): Application {
+    return this.app;
+  }
+
+  public getORM(): MikroORM {
+    return this.orm;
+  }
+
   private initStaticFiles() {
-    fs.copySync(
-      path.resolve(__dirname, "../../app/dist"),
-      path.resolve(__dirname, "../static"),
-      { overwrite: true }
-    );
-    this.server.use(express.static(path.resolve(__dirname, "../static")));
+    if (process.env.NODE_ENV === "production") {
+      this.app.use(express.static(path.resolve(__dirname, "../static")));
+    }
   }
 
   private initMiddlewares() {
