@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 
+const host =
+  process.env.NODE_ENV === "production"
+    ? "https://turborepo.herokuapp.com"
+    : "http://localhost:3000";
+
 export function useApiCalls(comments, setComments, upvoted, setUpvoted, seed) {
   const appendComment = useCallback(({ parent, ...body }) => {
     setComments((stateComments) => {
@@ -43,7 +48,7 @@ export function useApiCalls(comments, setComments, upvoted, setUpvoted, seed) {
   }, []);
 
   useEffect(() => {
-    const socket = io("http://localhost:3000");
+    const socket = io(host);
     socket.on("upvote", appendUpvote);
     socket.on("comment", appendComment);
     return () => {
@@ -53,7 +58,7 @@ export function useApiCalls(comments, setComments, upvoted, setUpvoted, seed) {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch("http://localhost:3000/comments");
+      const res = await fetch(`${host}/comments`);
       const { items } = await res.json();
       setComments(items);
     })();
@@ -61,7 +66,7 @@ export function useApiCalls(comments, setComments, upvoted, setUpvoted, seed) {
 
   const upvote = useCallback(
     async (uuid) => {
-      await fetch(`http://localhost:3000/comments/${uuid}/upvotes`, {
+      await fetch(`${host}/comments/${uuid}/upvotes`, {
         method: "POST",
       });
 
@@ -72,7 +77,7 @@ export function useApiCalls(comments, setComments, upvoted, setUpvoted, seed) {
 
   const postComment = useCallback(
     (parent) => async (values, actions) => {
-      const res = await fetch("http://localhost:3000/comments", {
+      const res = await fetch(`${host}/comments`, {
         method: "POST",
         body: JSON.stringify({
           ...(parent ? { parent } : {}),
