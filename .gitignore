@@ -27,4 +27,6 @@ yarn-error.log*
 # turbo
 .turbo
 
+dist
+
 /apps/api/static
