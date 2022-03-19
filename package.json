@@ -12,11 +12,12 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "postinstall": "yarn build"
+    "heroku-postbuild": "yarn build"
   },
   "devDependencies": {
     "prettier": "^2.5.1",
-    "turbo": "latest"
+    "turbo": "latest",
+    "typescript": "^4.6.2"
   },
   "engines": {
     "npm": ">=7.0.0",
